@@ -14,5 +14,4 @@ namespace ecommerce_shop.Data
         public DbSet<Review> Reviews { get; set; }
 
     }
-
 }
