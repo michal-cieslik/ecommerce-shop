@@ -1,53 +1,35 @@
 ﻿using ecommerce_shop.Data;
 using ecommerce_shop.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Services
 {
-    public class UserService(DataContext context)
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        private readonly DataContext _context = context;
+        private readonly IUserRepository _userRepository = userRepository;
 
-        public async Task<User> RegisterUserAsync(User newUser)
+        public Task<User> RegisterUserAsync(User newUser)
         {
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
+            return _userRepository.AddUserAsync(newUser);
         }
 
-        public async Task<List<User>> GetAllUsersAsync()
+        public Task<List<User>> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            return _userRepository.GetAllUsersAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return _userRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<User> UpdateUserAsync(int id, User updatedUser)
+        public Task<User> UpdateUserAsync(int id, User updatedUser)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null)
-            {
-                user.FirstName = updatedUser.FirstName;
-                user.LastName = updatedUser.LastName;
-                user.Email = updatedUser.Email;
-                user.Password = updatedUser.Password;
-                user.DateUpdated = DateTime.Now;
-                await _context.SaveChangesAsync();
-            }
-            return user;
+            return _userRepository.UpdateUserAsync(id, updatedUser);
         }
 
-        public async Task DeleteUserAsync(int id)
+        public Task DeleteUserAsync(int id)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null)
-            {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
-            }
+            return _userRepository.DeleteUserAsync(id);
         }
     }
 }

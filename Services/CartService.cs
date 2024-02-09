@@ -4,25 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Services
 {
-    public class CartService(DataContext context)
+    public class CartService(DataContext context) : ICartService
     {
         private readonly DataContext _context = context;
 
-        public async Task<Cart> AddCartItem(Cart newCartItem)
+        public async Task<Cart> AddCartItemAsync(Cart newCartItem)
         {
             _context.Carts.Add(newCartItem);
             await _context.SaveChangesAsync();
             return newCartItem;
         }
 
-        public async Task<List<Cart>> GetCartItems(int userId)
+        public async Task<List<Cart>> GetCartItemsAsync(int userId)
         {
             return await _context.Carts.Where(cart => cart.UserId == userId).ToListAsync();
         }
 
-        // Dodaj odpowiednie metody asynchroniczne dla pozostałych operacji, takich jak UpdateCartItem i RemoveCartItem.
-
-        public async Task<Cart> UpdateCartItem(int cartItemId, Cart updatedCartItem)
+        public async Task<Cart> UpdateCartItemAsync(int cartItemId, Cart updatedCartItem)
         {
             Cart existingCartItem = await _context.Carts.FindAsync(cartItemId);
 
@@ -36,7 +34,7 @@ namespace ecommerce_shop.Services
             return existingCartItem;
         }
 
-        public async Task RemoveCartItem(int cartItemId)
+        public async Task RemoveCartItemAsync(int cartItemId)
         {
             Cart cartItem = await _context.Carts.FindAsync(cartItemId);
 

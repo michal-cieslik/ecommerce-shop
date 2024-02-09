@@ -1,51 +1,30 @@
-﻿using ecommerce_shop.Data;
-using ecommerce_shop.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ecommerce_shop.Models;
+using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class OrderService(DataContext context)
+    public class OrderService(IOrderRepository orderRepository) : IOrderService
     {
-        private readonly DataContext _context = context;
+        private readonly IOrderRepository _orderRepository = orderRepository;
 
         public async Task<Order> AddOrderAsync(Order newOrder)
         {
-            _context.Orders.Add(newOrder);
-            await _context.SaveChangesAsync();
-            return newOrder;
+            return await _orderRepository.AddOrderAsync(newOrder);
         }
 
         public async Task<List<Order>> GetOrdersAsync(int userId)
         {
-            return await _context.Orders.Where(order => order.UserId == userId).ToListAsync();
+            return await _orderRepository.GetOrdersAsync(userId);
         }
 
         public async Task<Order> UpdateOrderAsync(int orderId, Order updatedOrder)
         {
-            Order existingOrder = await _context.Orders.FirstOrDefaultAsync(order => order.OrderId == orderId);
-
-            if (existingOrder != null)
-            {
-                existingOrder.OrderId = updatedOrder.OrderId;
-                existingOrder.CustomerId = updatedOrder.CustomerId;
-                existingOrder.Amount = updatedOrder.Amount;
-                existingOrder.OrderDate = updatedOrder.OrderDate;
-
-                await _context.SaveChangesAsync();
-            }
-
-            return existingOrder;
+            return await _orderRepository.UpdateOrderAsync(orderId, updatedOrder);
         }
 
         public async Task RemoveOrderAsync(int orderId)
         {
-            Order orderToRemove = await _context.Orders.FirstOrDefaultAsync(order => order.OrderId == orderId);
-
-            if (orderToRemove != null)
-            {
-                _context.Orders.Remove(orderToRemove);
-                await _context.SaveChangesAsync();
-            }
+            await _orderRepository.RemoveOrderAsync(orderId);
         }
     }
 }

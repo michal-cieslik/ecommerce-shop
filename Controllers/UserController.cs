@@ -6,43 +6,86 @@ namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(UserService userService) : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
-        private readonly UserService _userService = userService;
+        private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] User newUser)
+        public async Task<IActionResult> RegisterUserAsync([FromBody] User newUser)
         {
-            User registeredUser = await _userService.RegisterUserAsync(newUser);
-            return Ok(registeredUser);
+            try
+            {
+                User registeredUser = await _userService.RegisterUserAsync(newUser);
+                return Ok(registeredUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
-            List<User> users = await _userService.GetAllUsersAsync();
-            return Ok(users);
+            try
+            {
+                List<User> users = await _userService.GetAllUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserByIdAsync(int id)
         {
-            User user = await _userService.GetUserByIdAsync(id);
-            return Ok(user);
+            try
+            {
+                User user = await _userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound($"User with ID {id} not found");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedUser)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] User updatedUser)
         {
-            User user = await _userService.UpdateUserAsync(id, updatedUser);
-            return Ok(user);
+            try
+            {
+                User user = await _userService.UpdateUserAsync(id, updatedUser);
+                if (user == null)
+                {
+                    return NotFound($"User with ID {id} not found");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUserAsync(int id)
         {
-            await _userService.DeleteUserAsync(id);
-            return Ok();
+            try
+            {
+                await _userService.DeleteUserAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

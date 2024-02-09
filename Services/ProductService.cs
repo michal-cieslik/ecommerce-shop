@@ -1,53 +1,35 @@
-﻿using ecommerce_shop.Data;
-using ecommerce_shop.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ecommerce_shop.Models;
+using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class ProductService(DataContext context)
+    public class ProductService(IProductRepository productRepository) : IProductService
     {
-        private readonly DataContext _context = context;
+        private readonly IProductRepository _productRepository = productRepository;
 
         public async Task<Product> CreateProductAsync(Product newProduct)
         {
-            _context.Products.Add(newProduct);
-            await _context.SaveChangesAsync();
-            return newProduct;
+            return await _productRepository.CreateProductAsync(newProduct);
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _productRepository.GetAllProductsAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            return await _productRepository.GetProductByIdAsync(id);
         }
 
         public async Task<Product> UpdateProductAsync(int id, Product updatedProduct)
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (product != null)
-            {
-                product.Name = updatedProduct.Name;
-                product.Description = updatedProduct.Description;
-                product.Price = updatedProduct.Price;
-                product.DateUpdated = DateTime.Now;
-
-                await _context.SaveChangesAsync();
-            }
-            return product;
+            return await _productRepository.UpdateProductAsync(id, updatedProduct);
         }
 
         public async Task DeleteProductAsync(int id)
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
+            await _productRepository.DeleteProductAsync(id);
         }
     }
 }

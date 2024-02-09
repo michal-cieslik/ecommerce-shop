@@ -1,6 +1,6 @@
 ﻿using ecommerce_shop.Models;
-using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ecommerce_shop.Controllers
 {
@@ -11,33 +11,33 @@ namespace ecommerce_shop.Controllers
         private readonly AddressService _addressService = addressService;
 
         [HttpGet]
-        public async Task<ActionResult<List<Address>>> GetAddresses()
+        public async Task<ActionResult<List<Address>>> GetAddressesAsync()
         {
-            return await _addressService.GetAddresses();
+            return await _addressService.GetAddressesAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddressById(int id)
+        public async Task<ActionResult<Address>> GetAddressByIdAsync(int id)
         {
-            return await _addressService.GetAddressById(id);
+            return await _addressService.GetAddressByIdAsync(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Address>> CreateAddress(Address address)
+        public async Task<ActionResult<Address>> CreateAddressAsync(Address address)
         {
-            return await _addressService.CreateAddress(address);
+            return await _addressService.CreateAddressAsync(address);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<Address>> UpdateAddress(Address address)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Address>> UpdateAddressAsync(int id, [FromBody] Address address)
         {
-            return await _addressService.UpdateAddress(address);
+            return await _addressService.UpdateAddressAsync(id, address);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAddress(int id)
+        public async Task<ActionResult<Address>> DeleteAddressAsync(int id)
         {
-            return await _addressService.DeleteAddress(id);
+            return await _addressService.DeleteAddressAsync(id);
         }
     }
 }

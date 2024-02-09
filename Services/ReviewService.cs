@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Services
 {
-    public class ReviewService(DataContext context)
+    public class ReviewService(DataContext context) : IReviewService
     {
         private readonly DataContext _context = context;
 
@@ -39,14 +39,16 @@ namespace ecommerce_shop.Services
             return review;
         }
 
-        public async Task DeleteReviewAsync(int id)
+        public async Task<Review> DeleteReviewAsync(int id)
         {
             Review review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == id);
             if (review != null)
             {
                 _context.Reviews.Remove(review);
                 await _context.SaveChangesAsync();
+                return review;
             }
+            else { return null; }
         }
     }
 }

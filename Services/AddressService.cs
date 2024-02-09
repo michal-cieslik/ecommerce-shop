@@ -1,44 +1,55 @@
-﻿using ecommerce_shop.Models;
-using ecommerce_shop.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using ecommerce_shop.Interfaces;
+using ecommerce_shop.Models;
 
 namespace ecommerce_shop.Services
 {
-    public class AddressService(DataContext context)
+    public class AddressService(IAddressRepository addressRepository)
     {
-        private readonly DataContext _dataContext = context;
+        private readonly IAddressRepository _addressRepository = addressRepository ?? throw new ArgumentNullException(nameof(addressRepository));
 
-        public async Task<Address> CreateAddress(Address address)
+        public async Task<Address> CreateAddressAsync(Address address)
         {
-            _dataContext.Addresses.Add(address);
-            await _dataContext.SaveChangesAsync();
-            return address;
+            return await _addressRepository.CreateAddressAsync(address);
         }
 
-        public async Task<List<Address>> GetAddresses()
+        public async Task<List<Address>> GetAddressesAsync()
         {
-            return await _dataContext.Addresses.ToListAsync();
+            return await _addressRepository.GetAllAddressesAsync();
         }
 
-        public async Task<Address> GetAddressById(int id)
+        public async Task<Address> GetAddressByIdAsync(int id)
         {
-            return await _dataContext.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+            return await _addressRepository.GetAddressByIdAsync(id);
         }
 
-        public async Task<Address> UpdateAddress(Address address)
+        public async Task<Address> UpdateAddressAsync(int id, Address updatedAddress)
         {
-            _dataContext.Addresses.Update(address);
-            await _dataContext.SaveChangesAsync();
-            return address;
+            var existingAddress = await _addressRepository.GetAddressByIdAsync(id);
+            if (existingAddress == null)
+            {
+                return null;
+            }
+
+            existingAddress.Street = updatedAddress.Street;
+            existingAddress.City = updatedAddress.City;
+            existingAddress.ZipCode = updatedAddress.ZipCode;
+            existingAddress.Country = updatedAddress.Country;
+            existingAddress.Phone = updatedAddress.Phone;
+            existingAddress.DateUpdated = DateTime.Now;
+
+            return await _addressRepository.UpdateAddressAsync(id, existingAddress);
         }
 
-        public async Task<bool> DeleteAddress(int id)
+        public async Task<Address> DeleteAddressAsync(int id)
         {
-            Address address = await _dataContext.Addresses.FirstOrDefaultAsync(x => x.Id == id);
-            if (address == null) return false;
-            _dataContext.Addresses.Remove(address);
-            await _dataContext.SaveChangesAsync();
-            return true;
+            var addressToDelete = await _addressRepository.GetAddressByIdAsync(id);
+            if (addressToDelete == null)
+            {
+                return null;
+            }
+
+            await _addressRepository.DeleteAddressAsync(id);
+            return addressToDelete;
         }
     }
 }

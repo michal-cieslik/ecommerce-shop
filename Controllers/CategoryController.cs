@@ -9,42 +9,38 @@ namespace ecommerce_shop.Controllers
         private readonly CategoryService _categoryService = categoryService;
 
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> GetCategoriesAsync()
         {
-            List<Category> categories = await _categoryService.GetCategories();
+            List<Category> categories = await _categoryService.GetCategoriesAsync();
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryById(int id)
+        public async Task<IActionResult> GetCategoryByIdAsync(int id)
         {
-            Category category = await _categoryService.GetCategoryById(id);
+            Category category = await _categoryService.GetCategoryByIdAsync(id);
             return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] Category category)
+        public async Task<IActionResult> CreateCategoryAsync([FromBody] Category category)
         {
-            Category newCategory = await _categoryService.CreateCategory(category);
+            Category newCategory = await _categoryService.CreateCategoryAsync(category);
             return Ok(newCategory);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateCategory([FromBody] Category category)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateCategoryAsync([FromBody] Category category)
         {
-            Category updatedCategory = await _categoryService.UpdateCategory(category);
+            Category updatedCategory = await _categoryService.UpdateCategoryAsync(category);
             return Ok(updatedCategory);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
-            bool isDeleted = await _categoryService.DeleteCategory(id);
-            if (isDeleted)
-            {
-                return Ok();
-            }
-            return NotFound();
+            await _categoryService.DeleteCategoryAsync(id);
+            return Ok();
         }
     }
 }
