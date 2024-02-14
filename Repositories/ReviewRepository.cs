@@ -27,12 +27,12 @@ namespace ecommerce_shop.Data
 
         public async Task<Review> GetReviewByIdAsync(int id)
         {
-            return await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == id);
+            return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Review> UpdateReviewAsync(int id, Review updatedReview)
         {
-            Review review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == id);
+            Review review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
             if (review != null)
             {
                 review.Rating = updatedReview.Rating;
@@ -46,7 +46,7 @@ namespace ecommerce_shop.Data
 
         public async Task<Review> DeleteReviewAsync(int id)
         {
-            Review review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == id);
+            Review review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
             if (review != null)
             {
                 _context.Reviews.Remove(review);

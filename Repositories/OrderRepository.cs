@@ -15,18 +15,18 @@ namespace ecommerce_shop.Repositories
             return newOrder;
         }
 
-        public async Task<List<Order>> GetOrdersAsync(int userId)
+        public async Task<List<Order>> GetOrdersAsync(int Id)
         {
-            return await _context.Orders.Where(order => order.UserId == userId).ToListAsync();
+            return await _context.Orders.Where(order => order.Id == Id).ToListAsync();
         }
 
-        public async Task<Order> UpdateOrderAsync(int orderId, Order updatedOrder)
+        public async Task<Order> UpdateOrderAsync(int Id, Order updatedOrder)
         {
-            Order existingOrder = await _context.Orders.FirstOrDefaultAsync(order => order.OrderId == orderId);
+            Order existingOrder = await _context.Orders.FirstOrDefaultAsync(order => order.Id == Id);
 
             if (existingOrder != null)
             {
-                existingOrder.OrderId = updatedOrder.OrderId;
+                existingOrder.Id = updatedOrder.Id;
                 existingOrder.CustomerId = updatedOrder.CustomerId;
                 existingOrder.Amount = updatedOrder.Amount;
                 existingOrder.OrderDate = updatedOrder.OrderDate;
@@ -37,9 +37,9 @@ namespace ecommerce_shop.Repositories
             return existingOrder;
         }
 
-        public async Task RemoveOrderAsync(int orderId)
+        public async Task RemoveOrderAsync(int Id)
         {
-            Order orderToRemove = await _context.Orders.FirstOrDefaultAsync(order => order.OrderId == orderId);
+            Order orderToRemove = await _context.Orders.FirstOrDefaultAsync(order => order.Id == Id);
 
             if (orderToRemove != null)
             {
