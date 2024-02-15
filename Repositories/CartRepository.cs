@@ -4,9 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Repositories
 {
-    public class CartRepository(DataContext context) : ICartRepository
+    public class CartRepository : ICartRepository
     {
-        private readonly DataContext _context = context;
+        public CartRepository(DataContext context) : base()
+        {
+            _context = context;
+        }
+        private readonly DataContext _context;
 
         public async Task<Cart> AddCartItemAsync(Cart newCartItem)
         {

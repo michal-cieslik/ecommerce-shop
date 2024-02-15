@@ -1,14 +1,21 @@
 ﻿using ecommerce_shop.Services;
 using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Mvc;
+using ecommerce_shop.Data;
+using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController(ICartService cartService) : ControllerBase
+    public class CartController : ControllerBase
     {
-        private readonly ICartService _cartService = cartService;
+        public CartController(DataContext context) : base()
+        {
+            var _cartRepository = new CartRepository(context);
+            _cartService = new CartService(_cartRepository);
+        }
+        private readonly CartService _cartService;
 
         [HttpPost]
         public async Task<ActionResult<Cart>> AddCartItemAsync(Cart newCartItem)

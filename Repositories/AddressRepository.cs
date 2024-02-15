@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Repositories
 {
-    public class AddressRepository(DataContext context) : IAddressRepository
+    public class AddressRepository : IAddressRepository
     {
-
-        private readonly DataContext _context = context;
+        public AddressRepository(DataContext context) : base()
+        {
+            _context = context;
+        }
+        private readonly DataContext _context;
 
         public async Task<Address> CreateAddressAsync(Address newAddress)
         {

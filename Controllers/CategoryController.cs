@@ -1,12 +1,19 @@
-﻿using ecommerce_shop.Models;
+﻿using ecommerce_shop.Data;
+using ecommerce_shop.Models;
+using ecommerce_shop.Repositories;
 using ecommerce_shop.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ecommerce_shop.Controllers
 {
-    public class CategoryController(CategoryService categoryService) : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly CategoryService _categoryService = categoryService;
+        public CategoryController(DataContext context) : base()
+        {
+            var _categoryRepository = new CategoryRepository(context);
+            _categoryService = new CategoryService(_categoryRepository);
+        }
+        private readonly CategoryService _categoryService;
 
         [HttpGet]
         public async Task<IActionResult> GetCategoriesAsync()

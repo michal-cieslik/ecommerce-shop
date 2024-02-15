@@ -1,11 +1,16 @@
-﻿using ecommerce_shop.Models;
+﻿using ecommerce_shop.Data;
+using ecommerce_shop.Models;
 using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class CategoryService(ICategoryRepository categoryRepository) : ICategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
+        public CategoryService(ICategoryRepository CategoryRepository)
+        {
+            _categoryRepository = CategoryRepository;
+        }
+        private readonly ICategoryRepository _categoryRepository;
 
         public async Task<List<Category>> GetCategoriesAsync()
         {

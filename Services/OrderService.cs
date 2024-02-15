@@ -1,11 +1,16 @@
-﻿using ecommerce_shop.Models;
+﻿using ecommerce_shop.Data;
+using ecommerce_shop.Models;
 using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class OrderService(IOrderRepository orderRepository) : IOrderService
+    public class OrderService : IOrderService
     {
-        private readonly IOrderRepository _orderRepository = orderRepository;
+        public OrderService(IOrderRepository orderRepository)
+        {
+            _orderRepository = orderRepository;
+        }
+        private readonly IOrderRepository _orderRepository;
 
         public async Task<Order> AddOrderAsync(Order newOrder)
         {

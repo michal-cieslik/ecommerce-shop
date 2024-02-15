@@ -1,19 +1,26 @@
 ﻿using ecommerce_shop.Models;
-using ecommerce_shop.Services;
 using Microsoft.AspNetCore.Mvc;
+using ecommerce_shop.Services;
+using ecommerce_shop.Data;
+using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AddressController(AddressService addressService) : ControllerBase
+    public class AddressController : ControllerBase
     {
-        private readonly AddressService _addressService = addressService;
+        public AddressController(DataContext context) : base()
+        {
+            var _addressRepository = new AddressRepository(context);
+            _addressService = new AddressService(_addressRepository);
+        }
+        private readonly AddressService _addressService;
 
         [HttpGet]
-        public async Task<ActionResult<List<Address>>> GetAddressesAsync()
+        public async Task<ActionResult<List<Address>>> GetAllAddressesAsync()
         {
-            return await _addressService.GetAddressesAsync();
+            return await _addressService.GetAllAddressesAsync();
         }
 
         [HttpGet("{id}")]

@@ -4,9 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Repositories
 {
-    public class OrderRepository(DataContext context) : IOrderRepository
+    public class OrderRepository : IOrderRepository
     {
-        private readonly DataContext _context = context;
+        public OrderRepository(DataContext context) : base()
+        {
+            _context = context;
+        }
+        private readonly DataContext _context;
 
         public async Task<Order> AddOrderAsync(Order newOrder)
         {

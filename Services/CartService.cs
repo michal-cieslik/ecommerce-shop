@@ -1,48 +1,34 @@
-﻿using ecommerce_shop.Data;
-using ecommerce_shop.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using ecommerce_shop.Models;
+using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class CartService(DataContext context) : ICartService
+    public class CartService : ICartService
     {
-        private readonly DataContext _context = context;
+        public CartService(ICartRepository cartRepository)
+        {
+            _cartRepository = cartRepository;
+        }
+        private readonly ICartRepository _cartRepository;
 
         public async Task<Cart> AddCartItemAsync(Cart newCartItem)
         {
-            _context.Carts.Add(newCartItem);
-            await _context.SaveChangesAsync();
-            return newCartItem;
+            return await _cartRepository.AddCartItemAsync(newCartItem);
         }
 
         public async Task<List<Cart>> GetCartItemsAsync(int userId)
         {
-            return await _context.Carts.Where(cart => cart.UserId == userId).ToListAsync();
+            return await _cartRepository.GetCartItemsAsync(userId);
         }
 
         public async Task<Cart> UpdateCartItemAsync(int cartItemId, Cart updatedCartItem)
         {
-            Cart existingCartItem = await _context.Carts.FindAsync(cartItemId);
-
-            if (existingCartItem != null)
-            {
-                existingCartItem.DateUpdated = updatedCartItem.DateUpdated;
-                existingCartItem.Quantity = updatedCartItem.Quantity;
-                await _context.SaveChangesAsync();
-            }
-
-            return existingCartItem;
+            return await _cartRepository.UpdateCartItemAsync(cartItemId, updatedCartItem);
         }
 
-        public async Task RemoveCartItemAsync(int cartItemId)
+        public Task RemoveCartItemAsync(int cartItemId)
         {
-            Cart cartItem = await _context.Carts.FindAsync(cartItemId);
-
-            if (cartItem != null)
-            {
-                _context.Carts.Remove(cartItem);
-                await _context.SaveChangesAsync();
-            }
+            return _cartRepository.RemoveCartItemAsync(cartItemId);
         }
     }
 }

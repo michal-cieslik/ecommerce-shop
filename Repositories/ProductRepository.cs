@@ -4,9 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Repositories
 {
-    public class ProductRepository(DataContext context) : IProductRepository
+    public class ProductRepository : IProductRepository
     {
-        private readonly DataContext _context = context;
+        public ProductRepository(DataContext context) : base()
+        {
+            _context = context;
+        }
+        private readonly DataContext _context;
 
         public async Task<Product> CreateProductAsync(Product newProduct)
         {

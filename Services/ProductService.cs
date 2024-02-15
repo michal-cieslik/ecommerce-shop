@@ -3,9 +3,13 @@ using ecommerce_shop.Repositories;
 
 namespace ecommerce_shop.Services
 {
-    public class ProductService(IProductRepository productRepository) : IProductService
+    public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository = productRepository;
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+        private readonly IProductRepository _productRepository;
 
         public async Task<Product> CreateProductAsync(Product newProduct)
         {

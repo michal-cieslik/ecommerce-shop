@@ -3,28 +3,32 @@ using ecommerce_shop.Models;
 
 namespace ecommerce_shop.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository = userRepository;
-
-        public Task<User> RegisterUserAsync(User newUser)
+        public UserService(IUserRepository userRepository)
         {
-            return _userRepository.AddUserAsync(newUser);
+            _userRepository = userRepository;
+        }
+        private readonly IUserRepository _userRepository;
+
+        public async Task<User> CreateUserAsync(User newUser)
+        {
+            return await _userRepository.CreateUserAsync(newUser);
         }
 
-        public Task<List<User>> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return _userRepository.GetAllUsersAsync();
+            return await _userRepository.GetAllUsersAsync();
         }
 
-        public Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return _userRepository.GetUserByIdAsync(id);
+            return await _userRepository.GetUserByIdAsync(id);
         }
 
-        public Task<User> UpdateUserAsync(int id, User updatedUser)
+        public async Task<User> UpdateUserAsync(int id, User updatedUser)
         {
-            return _userRepository.UpdateUserAsync(id, updatedUser);
+            return await _userRepository.UpdateUserAsync(id, updatedUser);
         }
 
         public Task DeleteUserAsync(int id)

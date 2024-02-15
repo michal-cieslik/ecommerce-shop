@@ -1,14 +1,21 @@
 ﻿using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
+using ecommerce_shop.Repositories;
+using ecommerce_shop.Data;
 
 namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(ProductService productService) : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly ProductService _productService = productService;
+        public ProductController(DataContext context) : base()
+        {
+            var _productRepository = new ProductRepository(context);
+            _productService = new ProductService(_productRepository);
+        }
+        private readonly ProductService _productService;
 
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] Product newProduct)

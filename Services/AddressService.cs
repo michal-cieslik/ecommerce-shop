@@ -3,16 +3,20 @@ using ecommerce_shop.Models;
 
 namespace ecommerce_shop.Services
 {
-    public class AddressService(IAddressRepository addressRepository)
+    public class AddressService : IAddressService
     {
-        private readonly IAddressRepository _addressRepository = addressRepository ?? throw new ArgumentNullException(nameof(addressRepository));
+        public AddressService(IAddressRepository addressRepository) 
+        {
+            _addressRepository = addressRepository;
+        }
+        private readonly IAddressRepository _addressRepository;
 
         public async Task<Address> CreateAddressAsync(Address address)
         {
             return await _addressRepository.CreateAddressAsync(address);
         }
 
-        public async Task<List<Address>> GetAddressesAsync()
+        public async Task<List<Address>> GetAllAddressesAsync()
         {
             return await _addressRepository.GetAllAddressesAsync();
         }

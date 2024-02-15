@@ -1,21 +1,27 @@
 ﻿using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
+using ecommerce_shop.Data;
 
 namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(IUserService userService) : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+        public UserController(DataContext context) : base()
+        {
+            var _userRepository = new UserRepository(context);
+            _userService = new UserService(_userRepository);
+        }
+        private readonly UserService _userService;
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] User newUser)
+        public async Task<IActionResult> CreateUserAsync([FromBody] User newUser)
         {
             try
             {
-                User registeredUser = await _userService.RegisterUserAsync(newUser);
+                User registeredUser = await _userService.CreateUserAsync(newUser);
                 return Ok(registeredUser);
             }
             catch (Exception ex)

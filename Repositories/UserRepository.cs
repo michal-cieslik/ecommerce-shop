@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Data
 {
-    public class UserRepository(DataContext context) : IUserRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly DataContext _context = context;
+        public UserRepository(DataContext context) : base()
+        {
+            _context = context;
+        }
+        private readonly DataContext _context;
 
-        public async Task<User> AddUserAsync(User newUser)
+        public async Task<User> CreateUserAsync(User newUser)
         {
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();

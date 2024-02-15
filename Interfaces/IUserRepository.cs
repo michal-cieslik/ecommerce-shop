@@ -4,7 +4,7 @@ namespace ecommerce_shop.Data
 {
     public interface IUserRepository
     {
-        Task<User> AddUserAsync(User newUser);
+        Task<User> CreateUserAsync(User newUser);
         Task<List<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
         Task<User> UpdateUserAsync(int id, User updatedUser);
