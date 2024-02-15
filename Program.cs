@@ -1,15 +1,20 @@
-var builder = WebApplication.CreateBuilder(args);
+using ecommerce_shop.Data;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(connectionString));
 
-// Configure the HTTP request pipeline.
+WebApplication app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
