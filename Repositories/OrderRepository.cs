@@ -31,7 +31,7 @@ namespace ecommerce_shop.Repositories
             if (existingOrder != null)
             {
                 existingOrder.Id = updatedOrder.Id;
-                existingOrder.CustomerId = updatedOrder.CustomerId;
+                existingOrder.UserId = updatedOrder.UserId;
                 existingOrder.Amount = updatedOrder.Amount;
                 existingOrder.OrderDate = updatedOrder.OrderDate;
 

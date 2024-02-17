@@ -16,7 +16,7 @@ namespace ecommerce_shop.Services
             return await _cartRepository.AddCartItemAsync(newCartItem);
         }
 
-        public async Task<List<Cart>> GetCartItemsAsync(int userId)
+        public async Task<List<Cart>> GetCartItemsAsync(string userId)
         {
             return await _cartRepository.GetCartItemsAsync(userId);
         }

@@ -1,15 +1,13 @@
 ﻿using ecommerce_shop.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_shop.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-        }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -21,21 +19,12 @@ namespace ecommerce_shop.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Orders)
-                .WithOne(o => o.User);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Addresses)
-                .WithOne(a => a.User);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Reviews)
-                .WithOne(r => r.User);
-
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Cart)
-                .WithOne(c => c.User);
+            modelBuilder.Entity<Cart>()
+                .HasOne(u => u.User)
+                .WithMany(c => c.Cart)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Cart_User");
 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Reviews)
@@ -48,8 +37,6 @@ namespace ecommerce_shop.Data
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Categories)
                 .WithMany(c => c.Products);
-
-
         }
     }
 }

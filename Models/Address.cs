@@ -8,6 +8,6 @@
         public string Country { get; set; }
         public string Phone { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -6,8 +6,8 @@
         public decimal Price { get; set; }
         public string Description { get; set; }
 
-        public List<Review> Reviews { get; set; }
-        public List<Cart> Carts { get; set; }
-        public List<Category> Categories { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

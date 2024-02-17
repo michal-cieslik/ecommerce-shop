@@ -2,10 +2,10 @@
 {
     public class Order : BasicModel
     {
-        public int CustomerId { get; set; }
+        public string UserId { get; set; }
         public decimal Amount { get; set; }
         public DateTime OrderDate { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

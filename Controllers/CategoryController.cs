@@ -2,6 +2,7 @@
 using ecommerce_shop.Models;
 using ecommerce_shop.Repositories;
 using ecommerce_shop.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ecommerce_shop.Controllers
@@ -29,6 +30,7 @@ namespace ecommerce_shop.Controllers
             return Ok(category);
         }
 
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] Category category)
         {
@@ -36,6 +38,7 @@ namespace ecommerce_shop.Controllers
             return Ok(newCategory);
         }
 
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateCategoryAsync([FromBody] Category category)
         {
@@ -43,6 +46,8 @@ namespace ecommerce_shop.Controllers
             return Ok(updatedCategory);
         }
 
+        [Route("delete/{id:int}")]
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
