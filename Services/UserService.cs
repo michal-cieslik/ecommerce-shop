@@ -21,19 +21,19 @@ namespace ecommerce_shop.Services
             return await _userRepository.GetAllUsersAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
             return await _userRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<User> UpdateUserAsync(int id, User updatedUser)
+        public async Task<User> UpdateUserAsync(string id, User updatedUser)
         {
             return await _userRepository.UpdateUserAsync(id, updatedUser);
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task<User> DeleteUserAsync(string id)
         {
-            return _userRepository.DeleteUserAsync(id);
+            return await _userRepository.DeleteUserAsync(id);
         }
     }
 }

@@ -1,16 +1,12 @@
-﻿namespace ecommerce_shop.Models
-{
-    public class User : BasicModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Role { get; set; } = "User";
+﻿using Microsoft.AspNetCore.Identity;
 
-        public List<Order> Orders { get; set; }
-        public List<Address> Addresses { get; set; }
-        public List<Review> Reviews { get; set; }
-        public Cart Cart { get; set; }
+namespace ecommerce_shop.Models
+{
+    public class User : IdentityUser
+    {
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Cart> Cart { get; set; }
     }
 }

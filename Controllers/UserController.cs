@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
 using ecommerce_shop.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace ecommerce_shop.Controllers
 {
@@ -11,11 +12,14 @@ namespace ecommerce_shop.Controllers
     {
         public UserController(DataContext context) : base()
         {
-            var _userRepository = new UserRepository(context);
+            var _userRepository = new UserRepository(_userManager, context);
             _userService = new UserService(_userRepository);
         }
-        private readonly UserService _userService;
 
+        private readonly UserService _userService;
+        private readonly UserManager<User> _userManager;
+
+        [Route("register")]
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync([FromBody] User newUser)
         {
@@ -45,7 +49,7 @@ namespace ecommerce_shop.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserByIdAsync(int id)
+        public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             try
             {
@@ -63,7 +67,7 @@ namespace ecommerce_shop.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] User updatedUser)
+        public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] User updatedUser)
         {
             try
             {
@@ -81,7 +85,7 @@ namespace ecommerce_shop.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserAsync(int id)
+        public async Task<IActionResult> DeleteUserAsync(string id)
         {
             try
             {

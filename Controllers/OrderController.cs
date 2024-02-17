@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
 using ecommerce_shop.Data;
 using ecommerce_shop.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ecommerce_shop.Controllers
 {
@@ -24,6 +25,7 @@ namespace ecommerce_shop.Controllers
             return Ok(order);
         }
 
+        [Route("{id:int}")]
         [HttpGet]
         public async Task<IActionResult> GetOrdersAsync(int userId)
         {
@@ -38,6 +40,8 @@ namespace ecommerce_shop.Controllers
             return Ok(order);
         }
 
+        [Authorize(Roles = "Moderator,Admin")]
+        [Route("delete/{id:int}")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveOrderAsync(int id)
         {

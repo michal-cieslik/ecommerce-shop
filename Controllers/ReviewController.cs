@@ -1,6 +1,7 @@
 ﻿using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ecommerce_shop.Controllers
 {
@@ -10,6 +11,7 @@ namespace ecommerce_shop.Controllers
     {
         private readonly IReviewService _reviewService = reviewService;
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateReviewAsync([FromBody] Review newReview)
         {
@@ -38,6 +40,7 @@ namespace ecommerce_shop.Controllers
             return Ok(review);
         }
 
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReviewAsync(int id)
         {

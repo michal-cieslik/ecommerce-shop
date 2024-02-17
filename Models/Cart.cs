@@ -4,9 +4,9 @@
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        public User User { get; set; }
-        public List<Product> Products { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }
