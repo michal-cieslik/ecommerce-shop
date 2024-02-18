@@ -19,7 +19,7 @@ namespace ecommerce_shop.Repositories
             return newCartItem;
         }
 
-        public async Task<List<Cart>> GetCartItemsAsync(int userId)
+        public async Task<List<Cart>> GetCartItemsAsync(string userId)
         {
             return await _context.Carts.Where(cart => cart.UserId == userId).ToListAsync();
         }

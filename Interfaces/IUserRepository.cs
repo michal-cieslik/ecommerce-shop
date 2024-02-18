@@ -6,8 +6,8 @@ namespace ecommerce_shop.Data
     {
         Task<User> CreateUserAsync(User newUser);
         Task<List<User>> GetAllUsersAsync();
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> UpdateUserAsync(int id, User updatedUser);
-        Task DeleteUserAsync(int id);
+        Task<User> GetUserByIdAsync(string id);
+        Task<User> UpdateUserAsync(string id, User updatedUser);
+        Task<User> DeleteUserAsync(string id);
     }
 }

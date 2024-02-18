@@ -1,43 +1,32 @@
-<!DOCTYPE html>
-<html lang="pl">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <title>Strona główna</title>
+    <title>e-commerce app</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <script type="module" src="js/token.js"></script>
 </head>
 <body>
-    <header>
-        <div class="left">
-            <h1>Strona główna</h1>
-        </div>
-        <div class="right">
-            <div class="admin">
-                <input type="submit" class="logout-button" value="Panel admina">
-            </div>
-            <div class="logout">
-                <input type="submit" class="logout-button" value="Wyloguj się">
-            </div>
-            <div class="cart">
-                <button type="submit" class="cart-button">
-                    <img class="cart-icon" src="../assets/gfx/cart.svg" alt="Cart Icon">
-                </button>
-            </div>
-        </div>
-    </header>
-    <main>
-        <div class="product-grid" id="product-grid">
-            <div class="grid-container">
 
-            </div>
-        </div>
+    <div id="topBar">
+        <!-- Will be filled by token.js -->
+    </div>
 
-    </main>
-    <footer>
-        <p>&copy; 2024 Sklep internetowy. All rights reserved.</p>
-    </footer>
+    <h1>Welcome to the e-commerce application</h1>
+
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Product data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script src="js/products.js"></script>
 </body>
 </html>

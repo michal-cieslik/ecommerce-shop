@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
 using ecommerce_shop.Repositories;
 using ecommerce_shop.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ecommerce_shop.Controllers
 {
@@ -17,9 +18,11 @@ namespace ecommerce_shop.Controllers
         }
         private readonly ProductService _productService;
 
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] Product newProduct)
         {
+            newProduct.DateAdded = DateTime.UtcNow;
             Product product = await _productService.CreateProductAsync(newProduct);
             return Ok(product);
         }
@@ -31,13 +34,14 @@ namespace ecommerce_shop.Controllers
             return Ok(products);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProductByIdAsync(int id)
         {
             Product product = await _productService.GetProductByIdAsync(id);
             return Ok(product);
         }
 
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateProductAsync(int id, [FromBody] Product updatedProduct)
         {
@@ -45,7 +49,8 @@ namespace ecommerce_shop.Controllers
             return Ok(product);
         }
 
-        [HttpDelete("{id}")]
+        [Authorize(Roles = "Moderator,Admin")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProductAsync(int id)
         {
             await _productService.DeleteProductAsync(id);

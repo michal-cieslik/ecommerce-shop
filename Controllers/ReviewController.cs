@@ -1,18 +1,31 @@
 ﻿using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using ecommerce_shop.Services;
+using Microsoft.AspNetCore.Authorization;
+using ecommerce_shop.Data;
+using System.Security.Claims;
 
 namespace ecommerce_shop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewController(IReviewService reviewService) : ControllerBase
+    public class ReviewController : ControllerBase
     {
-        private readonly IReviewService _reviewService = reviewService;
+        public ReviewController(DataContext context) : base()
+        {
+            var _reviewRepository = new ReviewRepository(context);
+            _reviewService = new ReviewService(_reviewRepository);
+        }
+        private readonly IReviewService _reviewService;
 
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateReviewAsync([FromBody] Review newReview)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            newReview.UserId = userId;
+            newReview.DateAdded = DateTime.UtcNow;
             Review review = await _reviewService.CreateReviewAsync(newReview);
             return Ok(review);
         }
@@ -24,11 +37,11 @@ namespace ecommerce_shop.Controllers
             return Ok(reviews);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetReviewByIdAsync(int id)
+        [HttpGet("Product/{ProductId:int}")]
+        public async Task<IActionResult> GetReviewsByProductIdAsync(int ProductId)
         {
-            Review review = await _reviewService.GetReviewByIdAsync(id);
-            return Ok(review);
+            List<Review> reviews = await _reviewService.GetReviewsByProductIdAsync(ProductId);
+            return Ok(reviews);
         }
 
         [HttpPut("{id:int}")]
@@ -38,7 +51,8 @@ namespace ecommerce_shop.Controllers
             return Ok(review);
         }
 
-        [HttpDelete("{id}")]
+        [Authorize(Roles = "Moderator,Admin")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteReviewAsync(int id)
         {
             await _reviewService.DeleteReviewAsync(id);

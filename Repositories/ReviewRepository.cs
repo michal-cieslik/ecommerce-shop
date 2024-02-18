@@ -25,9 +25,9 @@ namespace ecommerce_shop.Data
             return await _context.Reviews.ToListAsync();
         }
 
-        public async Task<Review> GetReviewByIdAsync(int id)
+        public async Task<List<Review>> GetReviewsByProductIdAsync(int productId)
         {
-            return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
         }
 
         public async Task<Review> UpdateReviewAsync(int id, Review updatedReview)

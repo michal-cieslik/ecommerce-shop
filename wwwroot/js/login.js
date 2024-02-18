@@ -1,0 +1,41 @@
+﻿document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+    })
+        .then(response => {
+            if (response.status == 401) {
+                alert("Wrong username or password!");
+                return false;
+            }
+            else if (response.status != 200) {
+                alert("Something goes wrong!")
+                return false;
+            }
+            return response.json();
+        })
+        .then(data => {
+            const token = data.accessToken;
+            const refreshToken = data.refreshToken
+            const expiresIn = data.expiresIn;
+            var seconds = parseInt(expiresIn, 10);
+            const expirationDate = new Date(new Date().getTime() + seconds * 1000);
+            localStorage.setItem('token', token);
+            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('tokenExpiration', expirationDate.toISOString());
+            localStorage.setItem('isLoggedIn', true);
+
+            alert('Success!');
+            window.location.href = '/index.html';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+});
