@@ -10,14 +10,12 @@ namespace ecommerce_shop.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserController(DataContext context) : base()
+        private readonly UserService _userService;
+        public UserController(UserManager<User> userManager, DataContext context) : base()
         {
-            var _userRepository = new UserRepository(_userManager, context);
+            var _userRepository = new UserRepository(userManager, context);
             _userService = new UserService(_userRepository);
         }
-
-        private readonly UserService _userService;
-        private readonly UserManager<User> _userManager;
 
         [Route("register")]
         [HttpPost]
@@ -48,7 +46,7 @@ namespace ecommerce_shop.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             try
@@ -84,7 +82,7 @@ namespace ecommerce_shop.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUserAsync(string id)
         {
             try

@@ -23,9 +23,9 @@ namespace ecommerce_shop.Services
             return await _reviewRepository.GetAllReviewsAsync();
         }
 
-        public async Task<Review> GetReviewByIdAsync(int id)
+        public async Task<List<Review>> GetReviewsByProductIdAsync(int ProductId)
         {
-            return await _reviewRepository.GetReviewByIdAsync(id);
+            return await _reviewRepository.GetReviewsByProductIdAsync(ProductId);
         }
 
         public async Task<Review> UpdateReviewAsync(int id, Review updatedReview)

@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public DateTime DateAdded { get; set; }
-        public DateTime DateUpdated { get; set; } = DateTime.Now;
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 
         public BasicModel()
         { 

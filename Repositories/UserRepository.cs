@@ -6,7 +6,7 @@ namespace ecommerce_shop.Data
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository(UserManager<User> userManager, DataContext context) : base()
+        public UserRepository(UserManager<User> userManager, DataContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -15,10 +15,7 @@ namespace ecommerce_shop.Data
         private readonly UserManager<User> _userManager;
 
         public async Task<User> CreateUserAsync(User newUser)
-        {
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-
+        { 
             var result = await _userManager.CreateAsync(newUser);
 
             if (result.Succeeded)

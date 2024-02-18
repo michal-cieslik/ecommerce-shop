@@ -22,6 +22,7 @@ namespace ecommerce_shop.Controllers
         [HttpPost]
         public async Task<ActionResult<Cart>> AddCartItemAsync(Cart newCartItem)
         {
+            newCartItem.DateAdded = DateTime.UtcNow;
             return Created("", await _cartService.AddCartItemAsync(newCartItem));
         }
 
@@ -39,9 +40,8 @@ namespace ecommerce_shop.Controllers
             return await _cartService.UpdateCartItemAsync(cartItemId, updatedCartItem);
         }
 
-        [Route("delete/{id:int}")]
         [Authorize]
-        [HttpDelete("{cartItemId}")]
+        [HttpDelete("{cartItemId:int}")]
         public async Task<ActionResult> RemoveCartItemAsync(int cartItemId)
         {
             await _cartService.RemoveCartItemAsync(cartItemId);

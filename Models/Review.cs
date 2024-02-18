@@ -7,7 +7,7 @@
         public string Comment { get; set; }
         public int Rating { get; set; }
 
-        public virtual Product Product { get; set; }
-        public virtual User User { get; set; }
+        internal virtual Product Product { get; set; }
+        internal virtual User User { get; set; }
     }
 }

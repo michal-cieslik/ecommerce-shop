@@ -23,7 +23,7 @@ namespace ecommerce_shop.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCategoryByIdAsync(int id)
         {
             Category category = await _categoryService.GetCategoryByIdAsync(id);
@@ -34,6 +34,7 @@ namespace ecommerce_shop.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] Category category)
         {
+            category.DateAdded = DateTime.UtcNow;
             Category newCategory = await _categoryService.CreateCategoryAsync(category);
             return Ok(newCategory);
         }
@@ -46,9 +47,8 @@ namespace ecommerce_shop.Controllers
             return Ok(updatedCategory);
         }
 
-        [Route("delete/{id:int}")]
         [Authorize(Roles = "Moderator,Admin")]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
             await _categoryService.DeleteCategoryAsync(id);

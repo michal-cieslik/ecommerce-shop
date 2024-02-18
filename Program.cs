@@ -3,8 +3,18 @@ using ecommerce_shop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost");
+                      });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -48,9 +58,9 @@ using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-    string username = "Admin";
+    string username = "admin";
     string email = "admin@admin.com";
-    string password = "#!FajneHaslo2137";
+    string password = "#!Admin1234";
 
     if (await userManager.FindByEmailAsync(email) == null)
     {
@@ -74,6 +84,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 app.MapControllers();

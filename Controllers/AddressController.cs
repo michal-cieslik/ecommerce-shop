@@ -37,6 +37,7 @@ namespace ecommerce_shop.Controllers
         [HttpPost]
         public async Task<ActionResult<Address>> CreateAddressAsync(Address address)
         {
+            address.DateAdded = DateTime.UtcNow;
             return await _addressService.CreateAddressAsync(address);
         }
 
@@ -47,9 +48,8 @@ namespace ecommerce_shop.Controllers
             return await _addressService.UpdateAddressAsync(id, address);
         }
 
-        [Route("delete/{id:int}")]
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<Address>> DeleteAddressAsync(int id)
         {
             return await _addressService.DeleteAddressAsync(id);

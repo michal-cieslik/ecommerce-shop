@@ -12,7 +12,7 @@ using ecommerce_shop.Data;
 namespace ecommerce_shop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240217172852_InitialCreate")]
+    [Migration("20240218201338_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

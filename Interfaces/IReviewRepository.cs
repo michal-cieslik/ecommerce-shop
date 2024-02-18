@@ -6,7 +6,7 @@ namespace ecommerce_shop.Interfaces
     {
         Task<Review> CreateReviewAsync(Review newReview);
         Task<List<Review>> GetAllReviewsAsync();
-        Task<Review> GetReviewByIdAsync(int id);
+        Task<List<Review>> GetReviewsByProductIdAsync(int productId);
         Task<Review> UpdateReviewAsync(int id, Review updatedReview);
         Task<Review> DeleteReviewAsync(int id);
     }

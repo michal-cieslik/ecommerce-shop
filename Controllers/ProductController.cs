@@ -22,10 +22,10 @@ namespace ecommerce_shop.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] Product newProduct)
         {
+            newProduct.DateAdded = DateTime.UtcNow;
             Product product = await _productService.CreateProductAsync(newProduct);
             return Ok(product);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllProductsAsync()
